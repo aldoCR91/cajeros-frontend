@@ -5,20 +5,16 @@ import Home from "./Home";
 
 
 
-function App() {
+function App({cajeros}) {
 
   const { data: session } = useSession()
-  console.log({session});
-
-  setTimeout(() => {
-    
-  }, 2000);
+  //console.log({session});
 
   if(session == undefined || null){
     return (<Login  />)
   }
   else {
-    return ( <Home />)
+    return ( <Home cajeros={cajeros} />)
   }
 }
 
