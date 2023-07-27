@@ -6,7 +6,8 @@ import Image from "next/image";
 
 function Header() {
   const { data: session } = useSession();
-  const imageUrl = session.user.image;
+  const  imageUrl = session.user.image;
+  const name = session.user.name;
 
   const handleLogout = () => {
     signOut();
@@ -23,7 +24,8 @@ function Header() {
         </div>
         {/* derecha */}
         <div class="flex items-center flex-grow sm:flex-grow-0 cursor-pointer mr-6">
-          <button on onClick={handleLogout}>
+          <p className="text-white mr-3">{name}</p>
+          <button onClick={handleLogout}>
             <Image
               height={30}
               width={30}
