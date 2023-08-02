@@ -21,27 +21,17 @@ function Home({ cajeros }) {
   const user_create = async () => {
     const res = await axios.post("http://127.0.0.1:5000/usuarios",user)
       .then(function(response){
-        console.log(response)
+
+        console.log("****", response)
       })
       .catch(function (error) {
         console.log(error);
       });
   };
 
-  const user_exist = async (email) => {
-    let url = `http://127.0.0.1:5000/usuario/show`;
-    await axios.post(url,email)
-    .then(function(response){
-      console.log(response.data)
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
 
   useEffect(() => {
-    user_exist("luis@cuc.cr");
-    
+    user_create();
   }, [])
   
 
