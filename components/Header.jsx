@@ -23,13 +23,13 @@ function Header() {
           </Link>
         </div>
         {/* derecha */}
-        <div class="flex items-center flex-grow sm:flex-grow-0 cursor-pointer mr-6">
+        <div className="flex items-center flex-grow sm:flex-grow-0 cursor-pointer mr-6">
           <p className="text-white mr-3">{name}</p>
           <button onClick={handleLogout}>
             <Image
               height={30}
               width={30}
-              class="inline-block h-12 w-12 rounded-full ring-2 ring-white"
+              className="inline-block h-12 w-12 rounded-full ring-2 ring-white"
               src={imageUrl}
               alt="{user.handle}"
             />

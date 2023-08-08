@@ -1,8 +1,15 @@
 import Image from "next/image";
 import image from "./atm.png";
 import CurrencyFormat from "react-currency-format";
+import Link from "next/link";
+import { useEffect } from "react";
+import axios from "axios";
 
 export default function Cajero({ id, state, amount }) {
+
+
+  const handleDisponible = (e) => {};
+
   return (
     <div>
       <div className={`relative flex flex-col m-5 bg-white z-30 p-10`}>
@@ -19,24 +26,25 @@ export default function Cajero({ id, state, amount }) {
           className="mx-auto"
           src={image}
           alt="title"
-          objectFit="contain"
+          // objectFit="contain"
         />
         <h4 className="mt-4 text-gray-500">{state}</h4>
 
-        <div className="fex justify-around">
-          <div>
-            <button
-              className={`button bg-yellow-500 h-10 p-2 text-white rounded-xl`}
-            >
-              Editar
-            </button>
+        <div className="">
+          <div
+            className={`button bg-yellow-600 h-10 text-white p-2 rounded-xl text-center`}
+          >
+            <Link href={"/CajeroMain"}>Editar</Link>
           </div>
-          <div>
-            <button
-              className={`button bg-red-600 h-10 text-white p-2 rounded-xl`}
-            >
-              Eliminar
-            </button>
+          <div
+            className={`button bg-red-600 h-10 text-white p-2 rounded-xl text-center`}
+          >
+            <Link href={"/CajeroMain"}>Eliminar</Link>
+          </div>
+          <div
+            className={`button bg-green-600 h-10 text-white p-2 rounded-xl text-center`}
+          >
+            <Link href={`/CajeroMain?id=${id}`}>Disponible</Link>
           </div>
         </div>
       </div>
