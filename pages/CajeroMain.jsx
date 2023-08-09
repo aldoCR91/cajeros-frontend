@@ -1,26 +1,50 @@
 import Header from "@/components/Header";
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function CajeroMain() {
   const router = useRouter();
   const { id } = router.query;
 
+  const handleDepositos = () => {
+    
+  }
+
+  useEffect(() => {
+    axios.put(`http://127.0.0.1:5000/cajero/state/${id}`,{state: "Ocupado"});
+
+    return () => {
+      axios.put(`http://127.0.0.1:5000/cajero/state/${id}`,{state: "Disponible"});
+    }
+  }, [])
+  
+
   return (
     <>
       <Header></Header>
-      <h4>Utilizando el cajero {id}</h4>
       <div className="space-y-4">
         <div className="flex justify-center text-white">
           <div className={`flex h-96 w-11/12 bg-slate-950 rounded-lg`}>
             <div className="col flex-1 h-16 mt-8">
-              <div className="h-16 pl-8">Retiros</div>
-              <div className="h-16 pl-8">Depositos</div>
+              <div className="h-16 pl-8 cursor-pointer hover:text-lg hover:text-yellow-200"
+                onClick={handleDepositos}
+              >Retiros</div>
+              <div className="h-16 pl-8 cursor-pointer hover:text-lg hover:text-yellow-200"
+                onClick={handleDepositos}
+              >Depositos</div>
             </div>
             <div className="col flex-1 h-16 text-right mt-8">
-              <div className="h-16 pr-8">Transferencias</div>
-              <div className="h-16 pr-8">Consulta de saldo</div>
+              <div className="h-16 pr-8 cursor-pointer hover:text-lg hover:text-yellow-200"
+                onClick={handleDepositos}
+              >Transferencias</div>
+              <div className="h-16 pr-8 cursor-pointer hover:text-lg hover:text-yellow-200"
+                onClick={handleDepositos}
+              >Consulta de saldo</div>
+              <div className="h-16 pr-8 cursor-pointer hover:text-lg hover:text-yellow-200"
+                onClick={handleDepositos}
+              >Historial</div>
             </div>
           </div>
         </div>
