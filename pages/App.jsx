@@ -4,13 +4,8 @@ import Login from "./Login";
 import Home from "./Home";
 
 
-
 function App({cajeros}) {
 
-  //console.log(cajeros) ok
-
-  const { data: session } = useSession()
-  //console.log({session});
 
   if(session == undefined || null){
     return (<Login  />)
