@@ -1,5 +1,3 @@
-
-
 import { Inter } from "next/font/google";
 import App from "./App";
 
@@ -8,6 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 
 export default function Home({cajeros}) {
+
   return <main>
     <App cajeros={cajeros}/>
   </main>;

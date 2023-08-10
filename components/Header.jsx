@@ -4,7 +4,8 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 
-function Header() {
+function Header({saldo}) {
+
   const { data: session } = useSession();
   const  imageUrl = session.user.image;
   const name = session.user.name;
@@ -15,7 +16,7 @@ function Header() {
 
   return (
     <header className="clear-both">
-      <div className=" flex items-center justify-between bg-sky-400 p-1 flex-grow py-2 mb-2">
+      <div className=" flex items-center justify-between bg-sky-400 p-1 flex-grow py-2 mb-0">
         {/* izquierda */}
         <div className="flex items-center flex-grow sm:flex-grow-0 cursor-pointer ml-6 sm:ml-1">
           <Link href="/">
@@ -24,7 +25,7 @@ function Header() {
         </div>
         {/* derecha */}
         <div className="flex items-center flex-grow sm:flex-grow-0 cursor-pointer mr-6">
-          <p className="text-white mr-3">{name}</p>
+          <p className="text-white mr-3">{name}{` $${saldo}`}</p>
           <button onClick={handleLogout}>
             <Image
               height={30}

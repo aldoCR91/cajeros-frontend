@@ -6,6 +6,7 @@ import Home from "./Home";
 
 function App({cajeros}) {
 
+  const { data: session } = useSession();
 
   if(session == undefined || null){
     return (<Login  />)
