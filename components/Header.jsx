@@ -9,6 +9,7 @@ function Header({saldo}) {
   const { data: session } = useSession();
   const  imageUrl = session.user.image;
   const name = session.user.name;
+  session.user.role = "administrador";
 
   const handleLogout = () => {
     signOut();
@@ -25,7 +26,7 @@ function Header({saldo}) {
         </div>
         {/* derecha */}
         <div className="flex items-center flex-grow sm:flex-grow-0 cursor-pointer mr-6">
-          <p className="text-white mr-3">{name}{` $${saldo}`}</p>
+          <p className="text-white mr-3">{name}{` $${session.user.role}`}</p>
           <button onClick={handleLogout}>
             <Image
               height={30}

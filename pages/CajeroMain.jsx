@@ -2,11 +2,24 @@ import Header from "@/components/Header";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "@/context/userContext";
+import { useSession } from "next-auth/react";
+
+
 
 function CajeroMain() {
   const router = useRouter();
   const { id } = router.query;
+
+  const { data: session } = useSession();
+
+  const {persona,setPersona} = useContext(UserContext);
+  console.log(persona,setPersona);
+
+  const cambiarApellido = () => {
+    setPersona({...persona, apellido: "Burgos"})
+  }
 
   const handleDepositos = () => {
     
@@ -18,12 +31,14 @@ function CajeroMain() {
     return () => {
       axios.put(`http://127.0.0.1:5000/cajero/state/${id}`,{state: "Disponible"});
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
 
   return (
     <>
       <Header></Header>
+      <h1>{`${persona.name} ${session.user.role}`}</h1>
       <div className="space-y-4">
         <div className="flex justify-center text-white">
           <div className={`flex h-96 w-11/12 bg-slate-950 rounded-lg`}>
@@ -97,7 +112,11 @@ function CajeroMain() {
                   0
                 </div>
                 <div className="flex-1 text-center font-bold text-xl  h-16 border border-slate-900 rounded-lg shadow-lg p-4 m-2"></div>
-                <div className="flex-1 text-center cursor-pointer hover:bg-green-600 font-bold text-xl  h-16 border border-slate-900 rounded-lg shadow-lg p-4 m-2 bg-green-500">
+                <div
+                  className="flex-1 text-center cursor-pointer hover:bg-green-600 font-bold text-xl  h-16 border border-slate-900 rounded-lg shadow-lg p-4 m-2 bg-green-500"
+                  onClick={cambiarApellido}
+                >
+                  
                   Aceptar
                 </div>
               </div>
