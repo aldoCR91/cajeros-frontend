@@ -14,29 +14,48 @@ function Home() {
   const { data: session } = useSession();
   const { email} = session.user;
 
+  // Getting contexts
   const {user, setUser} = useContext(UserContext);
   const {cajeros, setCajeros} = useContext(CajerosContext);
 
-  useEffect(() => {
-    console.log(user);
-    console.log(cajeros);
+  const getUser = () => {
     axios
       .get(`http://127.0.0.1:5000/usuario/${session.user.email}}`)
       .then((response) => {
-        console.log(response.data);
-        
+        setUser(response.data);
       })
       .catch((error) => {
-        console.log("Home 28");
-      });
+        console.log("Home 28 error en el get de usuarios");
+    });
+  }
+
+  const getCajeros = () => {
+    axios.get(`http://127.0.0.1:5000/cajeros`)
+      .then((response)=>{
+        setCajeros(response.data);
+      .catch((error)=>{
+        console.log("Home 37 Error en getCajeros")
+      })
+    });
+  }
+
+  const postCajero = () => {
+    axios.post("localhost:5000/cajero", { email })
+      .then((res) => {
+        getCajeros()
+    });
+  };
+
+  useEffect(() => {
+    // Getting user
+    getUser();
+    // Getting cajeros
+    getCajeros();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleCreateCajero = () => {
-    axios.post("localhost:5000/cajero", { email }).then((res) => {
-      console.log("53");
-    });
-  };
+  console.log("40", user);
+  console.log("41", cajeros);
 
   return (
     <>
@@ -48,7 +67,7 @@ function Home() {
             variant="text"
             color="primary"
             className="border cursor-pointer"
-            onClick={handleCreateCajero}
+            onClick={postCajero}
           >
             Agregar cajero
           </Button>
