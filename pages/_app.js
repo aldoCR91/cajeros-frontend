@@ -1,6 +1,9 @@
 import { SessionProvider } from "next-auth/react";
-import { UserProvider } from "@/context/userContext";
+
 import "@/styles/globals.css";
+import { UserProvider } from "@/context/userContext";
+import { CajerosProvider } from "@/context/cajerosContext";
+
 
 export default function App({
   Component,
@@ -9,7 +12,9 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <UserProvider>
-        <Component {...pageProps} />
+        <CajerosProvider>
+          <Component {...pageProps} />
+        </CajerosProvider>
       </UserProvider>
     </SessionProvider>
   );

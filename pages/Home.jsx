@@ -1,47 +1,33 @@
-
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { useSession } from "next-auth/react";
+import { useContext, useEffect } from "react";
+import axios from "axios";
 
 import Header from "@/components/Header";
 import Cajeros from "@/components/Cajeros";
 import Button from "@mui/material/Button";
 
+import { UserContext } from "@/context/userContext";
+import { CajerosContext } from "@/context/cajerosContext";
 
-function Home({ cajeros }) {
+function Home() {
+  // Get datos del usuario en session
   const { data: session } = useSession();
-  const { email, name, image } = session.user;
+  const { email} = session.user;
 
-  
-
-  const [user, setUser] = useState({
-    name,
-    email,
-    image,
-    rol: "user",
-    pin: 1234,
-    saldo: 0,
-  });
+  const {user, setUser} = useContext(UserContext);
+  const {cajeros, setCajeros} = useContext(CajerosContext);
 
   useEffect(() => {
+    console.log(user);
+    console.log(cajeros);
     axios
-      .get(`http://127.0.0.1:5000/usuario/${user.email}`)
+      .get(`http://127.0.0.1:5000/usuario/${session.user.email}}`)
       .then((response) => {
-        console.log("24", response.data);
-        setUser(response.data);
+        console.log(response.data);
+        
       })
       .catch((error) => {
         console.log("Home 28");
-        axios
-          .post("http://127.0.0.1:5000/usuarios", user)
-          .then((response) => {
-            setuser(response.data);
-            console.log("Home 42", user);
-          })
-          .catch((error) => {
-            console.log("Home 43");
-            console.error("Error al registrar usuario en DB:");
-          });
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -52,10 +38,10 @@ function Home({ cajeros }) {
     });
   };
 
-
   return (
     <>
-      <Header saldo={user.saldo} />
+      home
+      {/* <Header />
       <div className="row h-10 w-full bg-slate-200 content-center justify-center">
         <div className="h-8">
           <Button
@@ -67,8 +53,8 @@ function Home({ cajeros }) {
             Agregar cajero
           </Button>
         </div>
-      </div>
-      <Cajeros cajeros={cajeros} />
+      </div> */}
+      {/* <Cajeros cajeros={cajeros} /> */}
     </>
   );
 }

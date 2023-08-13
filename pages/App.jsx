@@ -4,7 +4,7 @@ import Login from "./Login";
 import Home from "./Home";
 
 
-function App({cajeros}) {
+function App() {
 
   const { data: session } = useSession();
 
@@ -12,7 +12,7 @@ function App({cajeros}) {
     return (<Login  />)
   }
   else {
-    return ( <Home cajeros={cajeros} />)
+    return ( <Home />)
   }
 }
 

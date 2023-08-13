@@ -2,16 +2,17 @@ const { createContext, useState } = require("react");
 
 export const UserContext = createContext();
 
-export const UserProvider = ({children}) => {
+export const UserProvider = ({ children }) => {
 
-    const [persona, setPersona] = useState({
-        name:"Karen",
-        apellido:"Camacho"
-    });
-    
-    return(
-        <UserContext.Provider value={{persona,setPersona}}>
-            {children}
-        </UserContext.Provider>
-    )
-}
+  const initialState = {
+    user: {}
+  };
+
+  const [user, setUser] = useState(initialState);
+
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+};

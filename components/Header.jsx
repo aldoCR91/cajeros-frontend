@@ -4,12 +4,10 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 
-function Header({saldo}) {
+function Header() {
 
   const { data: session } = useSession();
-  const  imageUrl = session.user.image;
-  const name = session.user.name;
-  session.user.role = "administrador";
+  
 
   const handleLogout = () => {
     signOut();
@@ -26,13 +24,13 @@ function Header({saldo}) {
         </div>
         {/* derecha */}
         <div className="flex items-center flex-grow sm:flex-grow-0 cursor-pointer mr-6">
-          <p className="text-white mr-3">{name}{` $${session.user.role}`}</p>
+          <p className="text-white mr-3">{session.user.name}</p>
           <button onClick={handleLogout}>
             <Image
               height={30}
               width={30}
               className="inline-block h-12 w-12 rounded-full ring-2 ring-white"
-              src={imageUrl}
+              src={session.user.image}
               alt="{user.handle}"
             />
           </button>

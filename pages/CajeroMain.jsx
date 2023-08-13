@@ -3,7 +3,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { UserContext } from "@/context/userContext";
+import { UserContext } from "@/context/estadoContext";
 import { useSession } from "next-auth/react";
 
 
@@ -38,7 +38,6 @@ function CajeroMain() {
   return (
     <>
       <Header></Header>
-      <h1>{`${persona.name} ${session.user.role}`}</h1>
       <div className="space-y-4">
         <div className="flex justify-center text-white">
           <div className={`flex h-96 w-11/12 bg-slate-950 rounded-lg`}>
