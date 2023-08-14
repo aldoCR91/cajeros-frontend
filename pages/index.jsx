@@ -9,9 +9,7 @@ export const StateContext = createContext();
 export default function Home() {
 
   const initialState = {
-    user: {
-      name:"Aldo"
-    },
+    user: {},
     cajeros: []
   };
 

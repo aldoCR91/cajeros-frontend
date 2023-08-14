@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 
 import Header from "@/components/Header";
@@ -7,47 +7,40 @@ import Cajeros from "@/components/Cajeros";
 import Button from "@mui/material/Button";
 import { StateContext } from "../pages/index";
 
+
 function Home() {
   // Get datos del usuario en session
   const { data: session } = useSession();
   const { email } = session.user;
 
   // Context
-  const {state, setState} = useContext(StateContext);
+  const { state, setState } = useContext(StateContext);
 
   // Loadings
   const [isCajerosLoading, setCajerosLoading] = useState(true);
   const [isUserLoading, setUserLoading] = useState(true);
 
+  const postCajero = ()=>{
+    axios.post('http://127.0.0.1:5000/cajero',{email})
+  }
+
+  //Registrar usuario
   useEffect(() => {
-    axios.get('http://127.0.0.1:5000/cajeros')
-      .then((response)=>{
-        console.log(response.data);
-        //setCajerosLoading(false);
+    axios
+      .get("http://127.0.0.1:5000/cajeros")
+      .then((response) => {
+        setState((prevState) => ({
+          ...prevState,
+          cajeros: response.data,
+        }));
+        setCajerosLoading(false);
+        //console.log(state)
       })
-    
-    axios.post(`http://127.0.0.1:5000/usuario`,{
-      name: session.user.name,
-      email: session.user.email,
-      image: session.user.image,
-      rol: "user",
-      pin: 1234,
-      saldo: 0
-    })
-    .then((response)=>{
-      console.log(response.data);  
-    })
+      .catch((error) => {
+        console.log("Home 31 get cajeros", error);
+      });
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  
-
-  const prueba = axios.get('http://127.0.0.1:5000/usuarios').then(res => res.data)
-
-  console.log("****", prueba);
-
-  const postUser = async () => {
-    await axios
+    axios
       .post(`http://127.0.0.1:5000/usuario`, {
         name: session.user.name,
         email: session.user.email,
@@ -56,47 +49,25 @@ function Home() {
         pin: 1234,
         saldo: 0,
       })
-      .then((response) => { 
-        return response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  console.log(postUser())
-
-  const getCajeros = async () => {
-    await axios
-      .get(`http://127.0.0.1:5000/cajeros`)
       .then((response) => {
-        console.log("get cajeros",response.data);
+        setState((prevState) => ({
+          ...prevState,
+          user: response.data,
+        }));
+        setUserLoading(false);
+        //console.log(state);
       })
       .catch((error) => {
-        console.log("Home 37 Error en getCajeros", error);
+        console.log("Home 48 post usuarios", error);
       });
-  };
-
-  const postCajero = async () => {
-    await axios.post("http://localhost:5000/cajero", { email }).then((res) => {
-      console.log("Creando cajero nuevo");
-      getCajeros();
-    });
-    getCajeros();
-  };
-
-  useEffect(() => {
-    // Getting user
-    postUser();
-    // Getting cajeros
-    getCajeros();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  
-
- 
+  if (isUserLoading) return <p>Cargando datos del usuario...</p>;
+  if (isCajerosLoading) return <p>Cargando datos de cajeros...</p>;
+  if (!state.user) return <p>No hay datos del usuario</p>;
+  if (!state.cajeros) return <p>No hay datos del cajero</p>;
 
   return (
     <>
@@ -115,7 +86,13 @@ function Home() {
           </div>
         </div>
       )}
-      {/* <Cajeros cajeros={cajeros} /> */}
+      {
+        state.cajeros.length > 0
+          ? (<Cajeros cajeros={state} />)
+          : (<p>No hay datos del cajero</p>)
+      }
+    
+      {/* <Cajeros cajeros={state.cajeros} /> */}
     </>
   );
 }

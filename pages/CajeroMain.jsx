@@ -1,64 +1,76 @@
-import Header from "@/components/Header";
-import axios from "axios";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "@/context/estadoContext";
+import { useEffect } from "react";
 import { useSession } from "next-auth/react";
+import axios from "axios";
 
+import Header from "@/components/Header";
 
 
 function CajeroMain() {
+
   const router = useRouter();
   const { id } = router.query;
 
   const { data: session } = useSession();
-
-  const {persona,setPersona} = useContext(UserContext);
-  console.log(persona,setPersona);
-
-  const cambiarApellido = () => {
-    setPersona({...persona, apellido: "Burgos"})
-  }
+  console.log("15",session.user.name);
 
   const handleDepositos = () => {
-    
-  }
+    console.log("18 handleDepositos");
+  };
 
   useEffect(() => {
-    axios.put(`http://127.0.0.1:5000/cajero/state/${id}`,{state: "Ocupado"});
+    axios.put(`http://127.0.0.1:5000/cajero/state/${id}`, { state: "Ocupado" });
+    axios.put(`http://127.0.0.1:5000/cajero/user_id/${id}`, { user_id:session.user.name});
 
     return () => {
-      axios.put(`http://127.0.0.1:5000/cajero/state/${id}`,{state: "Disponible"});
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  
+      axios.put(`http://127.0.0.1:5000/cajero/state/${id}`, {state: "Disponible"});
+      axios.put(`http://127.0.0.1:5000/cajero/user_id/${id}`, { user_id: null});
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
-      <Header></Header>
+      <Header />
+      <div className="h-10">
+        
+      </div>
       <div className="space-y-4">
         <div className="flex justify-center text-white">
           <div className={`flex h-96 w-11/12 bg-slate-950 rounded-lg`}>
             <div className="col flex-1 h-16 mt-8">
-              <div className="h-16 pl-8 cursor-pointer hover:text-lg hover:text-yellow-200"
+              <div
+                className="h-16 pl-8 cursor-pointer hover:text-lg hover:text-yellow-200"
                 onClick={handleDepositos}
-              >Retiros</div>
-              <div className="h-16 pl-8 cursor-pointer hover:text-lg hover:text-yellow-200"
+              >
+                Retiros
+              </div>
+              <div
+                className="h-16 pl-8 cursor-pointer hover:text-lg hover:text-yellow-200"
                 onClick={handleDepositos}
-              >Depositos</div>
+              >
+                Depositos
+              </div>
             </div>
             <div className="col flex-1 h-16 text-right mt-8">
-              <div className="h-16 pr-8 cursor-pointer hover:text-lg hover:text-yellow-200"
+              <div
+                className="h-16 pr-8 cursor-pointer hover:text-lg hover:text-yellow-200"
                 onClick={handleDepositos}
-              >Transferencias</div>
-              <div className="h-16 pr-8 cursor-pointer hover:text-lg hover:text-yellow-200"
+              >
+                Transferencias
+              </div>
+              <div
+                className="h-16 pr-8 cursor-pointer hover:text-lg hover:text-yellow-200"
                 onClick={handleDepositos}
-              >Consulta de saldo</div>
-              <div className="h-16 pr-8 cursor-pointer hover:text-lg hover:text-yellow-200"
+              >
+                Consulta de saldo
+              </div>
+              <div
+                className="h-16 pr-8 cursor-pointer hover:text-lg hover:text-yellow-200"
                 onClick={handleDepositos}
-              >Historial</div>
+              >
+                Historial
+              </div>
             </div>
           </div>
         </div>
@@ -113,9 +125,8 @@ function CajeroMain() {
                 <div className="flex-1 text-center font-bold text-xl  h-16 border border-slate-900 rounded-lg shadow-lg p-4 m-2"></div>
                 <div
                   className="flex-1 text-center cursor-pointer hover:bg-green-600 font-bold text-xl  h-16 border border-slate-900 rounded-lg shadow-lg p-4 m-2 bg-green-500"
-                  onClick={cambiarApellido}
+                  onClick={handleDepositos}
                 >
-                  
                   Aceptar
                 </div>
               </div>

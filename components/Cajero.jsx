@@ -2,13 +2,12 @@ import Image from "next/image";
 import image from "./atm.png";
 import CurrencyFormat from "react-currency-format";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { StateContext } from "../pages/index";
 import axios from "axios";
 
 export default function Cajero({ id, state, amount }) {
 
-
-  const handleDisponible = (e) => {};
 
   return (
     <div>
