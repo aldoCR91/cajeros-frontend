@@ -12,7 +12,35 @@ function Home() {
   const { data: session } = useSession();
   const { email } = session.user;
 
+  // Context
   const {state, setState} = useContext(StateContext);
+
+  // Loadings
+  const [isCajerosLoading, setCajerosLoading] = useState(true);
+  const [isUserLoading, setUserLoading] = useState(true);
+
+  useEffect(() => {
+    axios.get('http://127.0.0.1:5000/cajeros')
+      .then((response)=>{
+        console.log(response.data);
+        //setCajerosLoading(false);
+      })
+    
+    axios.post(`http://127.0.0.1:5000/usuario`,{
+      name: session.user.name,
+      email: session.user.email,
+      image: session.user.image,
+      rol: "user",
+      pin: 1234,
+      saldo: 0
+    })
+    .then((response)=>{
+      console.log(response.data);  
+    })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
 
   const prueba = axios.get('http://127.0.0.1:5000/usuarios').then(res => res.data)
 
