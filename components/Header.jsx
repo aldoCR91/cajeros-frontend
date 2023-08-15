@@ -7,7 +7,6 @@ import Image from "next/image";
 function Header() {
 
   const { data: session } = useSession();
-  
 
   const handleLogout = () => {
     signOut();

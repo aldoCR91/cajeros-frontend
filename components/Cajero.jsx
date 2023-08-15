@@ -5,9 +5,20 @@ import Link from "next/link";
 import { useContext, useEffect } from "react";
 import { StateContext } from "../pages/index";
 import axios from "axios";
+import { useRouter } from 'next/router'
 
-export default function Cajero({ id, state, amount }) {
+export default function Cajero({ id, state, amount, user_id }) {
 
+  const router = useRouter();
+
+  const handleCajeroOcupado = () => {
+    alert(`Este cajero esta ocupado por ${user_id}`)
+  }
+
+  const handleEliminar = () => {
+    axios.delete(`http://127.0.0.1:5000/cajero/${id}`)
+    router.push('/Home');
+  }
 
   return (
     <div>
@@ -27,24 +38,40 @@ export default function Cajero({ id, state, amount }) {
           alt="title"
           // objectFit="contain"
         />
-        <h4 className="mt-4 text-gray-500">{state}</h4>
+      
 
         <div className="">
           <div
-            className={`button bg-yellow-600 h-10 text-white p-2 rounded-xl text-center`}
+            className={`button bg-yellow-600 h-10 text-white p-2 rounded-xl text-center mt-2`}
           >
             <Link href={"/CajeroMain"}>Editar</Link>
           </div>
           <div
-            className={`button bg-red-600 h-10 text-white p-2 rounded-xl text-center`}
+            onClick={handleEliminar}
+            className={`button bg-red-600 h-10 text-white p-2 rounded-xl text-center mt-2`}
           >
             <Link href={"/CajeroMain"}>Eliminar</Link>
           </div>
-          <div
-            className={`button bg-green-600 h-10 text-white p-2 rounded-xl text-center`}
-          >
-            <Link href={`/CajeroMain?id=${id}`}>Disponible</Link>
-          </div>
+          {
+            (state == "Disponible")
+              ? (
+                <div
+                  className={`button bg-green-600 h-10 text-white p-2 rounded-xl text-center mt-2`}
+                >
+                  <Link href={`/CajeroMain?id=${id}`}>Disponible</Link>
+                </div>
+              )
+              : (
+                <div
+                  onClick={handleCajeroOcupado}
+                  className={`button cursor-pointer bg-gray-500 h-10 text-white p-2 rounded-xl text-center mt-2`}
+                >
+                  {state}
+                </div>
+              )
+          }
+          
+          
         </div>
       </div>
     </div>

@@ -24,6 +24,9 @@ function Home() {
     axios.post('http://127.0.0.1:5000/cajero',{email})
   }
 
+  const [contador, setContador] = useState(0);
+  
+
   //Registrar usuario
   useEffect(() => {
     axios
@@ -61,8 +64,13 @@ function Home() {
         console.log("Home 48 post usuarios", error);
       });
 
+      setTimeout(() => {
+        setContador(contador => contador+=1);
+        console.log("actualizando datos")
+      }, 5000);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [contador]);
 
   if (isUserLoading) return <p>Cargando datos del usuario...</p>;
   if (isCajerosLoading) return <p>Cargando datos de cajeros...</p>;
