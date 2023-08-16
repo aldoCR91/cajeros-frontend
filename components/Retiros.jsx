@@ -1,13 +1,43 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
-function Retiros({setOpt}) {
+function Retiros({ setOpt, email }) {
+  const [isSaldoLoading, setIsSaldoLoading] = useState(true);
+  const [saldo, setSaldo] = useState(0);
+
+  const [amount, setAmount] = useState(0);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (saldo >= amount) {
+      axios.put(`http://127.0.0.1:5000/usuario/update/saldo/${email}`, {
+        saldo: parseInt(saldo) - parseFloat(amount),
+      });
+      setOpt("saldo");
+    }else{
+      alert("Fondos insuficientes")
+    }
+  };
+
+  useEffect(() => {
+    axios.get(`http://127.0.0.1:5000/usuario/${email}`).then((response) => {
+      let user = response.data;
+      //console.log(user)
+      setSaldo(user.saldo);
+      setIsSaldoLoading(false);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleRegresar = () => {
     setOpt("menu");
   };
 
+  const handleRetiros = () => {};
+
   return (
     <div className="space-y-4 mb-8">
+      {saldo} - {amount}
       <div className="flex justify-center text-white">
         <div className={`flex h-96 w-11/12 bg-slate-950 rounded-lg`}>
           <div className="col flex-1 h-16 mt-8">
@@ -17,12 +47,27 @@ function Retiros({setOpt}) {
             >
               Regresar
             </div>
-            {/* <div
-              className="h-16 pl-8 cursor-pointer hover:text-lg hover:text-yellow-200"
-              onClick={handleDepositos}
-            >
-              Depositos
-            </div> */}
+
+            <div className="h-auto ml-1 text-center bg-transparent">
+              <form onSubmit={handleSubmit}>
+                <label>
+                  Cuanto desea retirar:
+                  <input
+                    className="rounded-md ml-4 text-black"
+                    type="number"
+                    value={amount}
+                    min={1}
+                    pattern="^[0-9]+"
+                    onChange={(e) => setAmount(e.target.value)}
+                  />
+                </label>
+                <input
+                  className="cursor-pointer ml-4"
+                  type="submit"
+                  value="Enviar"
+                />
+              </form>
+            </div>
           </div>
           <div className="col flex-1 h-16 text-right mt-8">
             {/* <div

@@ -14,6 +14,7 @@ function Saldo({ setOpt, email }) {
     axios.get(`http://127.0.0.1:5000/usuario/${email}`)
         .then((response) => {
             let user = response.data;
+            //console.log(user)
             setSaldo(user.saldo);
             setIsSaldoLoading(false);
         })
@@ -32,7 +33,7 @@ function Saldo({ setOpt, email }) {
               className="h-16 pl-8 cursor-pointer hover:text-lg hover:text-yellow-200"
               onClick={handleRegresar}
             >
-              Regresar
+              <span>Regresar</span>
             </div>
             <div
               className="h-auto text-center text-2xl"
@@ -40,15 +41,10 @@ function Saldo({ setOpt, email }) {
             >
               {(isSaldoLoading) && (<div><p>Cargando saldo del usuario...</p><p>{email}</p></div> )}
               <p>Disponible</p> 
-              {(saldo) &&  <p>sin datos</p>}
+              {(saldo) &&  <p>{saldo}</p>}
               
             </div>
-            {/* <div
-              className="h-16 pl-8 cursor-pointer hover:text-lg hover:text-yellow-200"
-              onClick={handleDepositos}
-            >
-              Depositos
-            </div> */}
+            
           </div>
         </div>
       </div>

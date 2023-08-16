@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
-function Depositos({ setOpt }) {
+function Depositos({ setOpt, email }) {
+  const [isSaldoLoading, setIsSaldoLoading] = useState(true);
+  const [saldo, setSaldo] = useState(0);
+
   const handleRegresar = () => {
     setOpt("menu");
   };
@@ -9,8 +13,21 @@ function Depositos({ setOpt }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    alert(amount);
+    axios.put(`http://127.0.0.1:5000/usuario/update/saldo/${email}`, {
+      saldo: (parseFloat(amount) + parseInt(saldo))
+    });
+    setOpt("saldo");
   };
+
+  useEffect(() => {
+    axios.get(`http://127.0.0.1:5000/usuario/${email}`).then((response) => {
+      let user = response.data;
+      //console.log(user)
+      setSaldo(user.saldo);
+      setIsSaldoLoading(false);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="space-y-4 mb-8">
@@ -25,20 +42,29 @@ function Depositos({ setOpt }) {
             </div>
 
             <div className="h-auto text-center bg-transparent">
-
               <form onSubmit={handleSubmit}>
-                <label>
-                  Cuanto desea depositar:
-                  <input
-                    className="rounded-md ml-4 text-black"
-                    type="number"
-                    value={amount}
-                    min={1}
-                    pattern="^[0-9]+"
-                    onChange={(e) => setAmount(e.target.value)}
-                  />
-                </label>
-                <input className="cursor-pointer ml-4" type="submit" value="Enviar"/>
+                {isSaldoLoading ? (
+                  <p>Cargando ...</p>
+                ) : (
+                  <>
+                    <label>
+                      Cuanto desea depositar:
+                      <input
+                        className="rounded-md ml-4 text-black"
+                        type="number"
+                        value={amount}
+                        min={1}
+                        pattern="^[0-9]+"
+                        onChange={(e) => setAmount(e.target.value)}
+                      />
+                    </label>
+                    <input
+                      className="cursor-pointer ml-4"
+                      type="submit"
+                      value="Enviar"
+                    />
+                  </>
+                )}
               </form>
             </div>
           </div>

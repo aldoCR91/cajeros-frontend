@@ -46,10 +46,10 @@ function CajeroMain() {
           opt == "menu" && <MenuCajeros  setOpt={setOpt}/>
         }
         {
-          opt == "depositos" && <Depositos setOpt={setOpt} />
+          opt == "depositos" && <Depositos setOpt={setOpt} email={session.user.email} />
         }
         {
-          opt == "retiros" && <Retiros setOpt={setOpt} />
+          opt == "retiros" && <Retiros setOpt={setOpt} email={session.user.email}/>
         }
         {
           opt == "saldo" && <Saldo setOpt={setOpt} email={session.user.email}/>
