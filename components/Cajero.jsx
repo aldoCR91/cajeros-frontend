@@ -2,7 +2,7 @@ import Image from "next/image";
 import image from "./atm.png";
 import CurrencyFormat from "react-currency-format";
 import Link from "next/link";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StateContext } from "../pages/index";
 import axios from "axios";
 import { useRouter } from 'next/router'
@@ -15,9 +15,22 @@ export default function Cajero({ id, state, amount, user_id }) {
     alert(`Este cajero esta ocupado por ${user_id}`)
   }
 
+  const [actualizando,setActualizando] = useState(false);
+  const [nuevoDisponible, setNuevoDisponible] = useState(1);
+
+  const actualizarCajero = (e) => {
+    e.preventDefault();
+    axios.put(`http://127.0.0.1:5000/cajero/amount/${id}`,{amount: nuevoDisponible});
+  }
+
+  const handleEditarCajero = ()=>{
+    setActualizando(!actualizando)
+    console.log(actualizando)
+  }
+
   const handleEliminar = () => {
     axios.delete(`http://127.0.0.1:5000/cajero/${id}`)
-    router.push('/Home');
+    
   }
 
   return (
@@ -44,14 +57,38 @@ export default function Cajero({ id, state, amount, user_id }) {
           <div
             className={`button bg-yellow-600 h-10 text-white p-2 rounded-xl text-center mt-2`}
           >
-            <Link href={"/CajeroMain"}>Editar</Link>
+            <button onClick={handleEditarCajero}>Editar</button>
           </div>
-          <div
-            onClick={handleEliminar}
-            className={`button bg-red-600 h-10 text-white p-2 rounded-xl text-center mt-2`}
-          >
-            <Link href={"/CajeroMain"}>Eliminar</Link>
-          </div>
+          {
+            (actualizando)
+              ? (
+                <div>
+                  <form onSubmit={actualizarCajero}>
+                    <label>Ingrese el nuevo disponible
+                      <input
+                        type="number"
+                        min={1}
+                        value={nuevoDisponible}
+                        onChange={(e) => setNuevoDisponible(e.target.value)}
+                        className="ml-4 bg-transparent rounded-lg my-2"
+                        />
+                    </label>
+                    <input value="Actualizar" className="cursor-pointer" type="submit"/>
+                  </form>
+                </div>
+              )
+              : (
+                <div>
+                  <div
+                    
+                    className={`button bg-red-600 h-10 text-white p-2 rounded-xl text-center mt-2`}
+                  >
+                    <button onClick={handleEliminar}>Eliminar</button>
+                  </div>
+                </div>
+              )
+          }
+          
           {
             (state == "Disponible")
               ? (
